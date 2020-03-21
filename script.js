@@ -1,5 +1,3 @@
-// filtrowanie w Tablicy
-
 const filteredListCont = document.querySelector('#list-container'),
     fetchURL = 'https://jsonplaceholder.typicode.com/todos',
     button = document.getElementById('getInfo');
@@ -15,24 +13,12 @@ let taskList,
     userIdfilterVal,
     idFromFilterVal,
     idToFilterVal,
-    titleFilterVal,
-    completedFilterVal,
-    // tu są możliwe wartości,które moze nasz klient wrzucić
+    // tu są możliwe wartości, które może nasz klient wrzucić
     userIdVal = new Set(),
     minIdVal,
     maxIdVal,
     // a to jest przefiltrowana lista, do wyświetlenia po kliku w button
     filteredList;
-
-const getParam = () => {
-    //userIdfilterVal = document.querySelector('input#user-filter').value;
-    idFromFilterVal = document.querySelector('input#id-from-filter').value;
-    idToFilterVal = document.querySelector('input#id-to-filter').value;
-    titleFilterVal = document.querySelector('input#title-filter').value;
-    completedFilterVal = document.querySelector('input#completed').checked;
-    //console.log(userIdfilter + '---' + idFromFilter + '---' + idToFilter + '---' + titleFilter + '---' + completedFilter)
-}
-
 
 // tu pobierane są dane przy załadowaniu strony
 fetch(fetchURL)
@@ -74,12 +60,9 @@ fetch(fetchURL)
             }
         });
 
-
-
         // ta funkcja będzie wypisywać i filtrować na żądanie klienta
         const filter = () => {
             // tu pobierałam value, ale teraz będę brać value przy okazji live sprawdzania
-            // getParam(); 
             filteredList = taskList
                 .filter(task => {
                     if (!userIdfilterVal) return true; // jeśli nie wpiszę nic to przechodzą wszystkie przez filtr
@@ -87,21 +70,30 @@ fetch(fetchURL)
                         return task.userId == userIdfilterVal
                 })
                 .filter(task => {
-                    if (!idFromFilterVal || !idToFilterVal) return true;
+                    if (!idFromFilterVal) return true;
                     else
-                    return (task.id >= idFromFilterVal && task.id <= idToFilterVal)
+                        return (task.id >= idFromFilterVal)
+                })
+                .filter(task => {
+                    if (!idToFilterVal) return true;
+                    else
+                        return (task.id <= idToFilterVal)
                 })
                 .filter(task => {
                     if (!titleFilter.value) return true;
-                    else 
-                    return task.title.includes(titleFilter.value)
+                    else
+                        return task.title.includes(titleFilter.value)
                 })
-            // .filter(task => {
-            //     return task.completed == true
-            // })
-            console.log(taskList)
-            console.log(titleFilter.value)
-            console.log('lista po filtrze', filteredList)
+                .filter(task => {
+                    return task.completed == completedFilter.checked
+                });
+            filteredListCont.innerHTML = "";
+            for (task of filteredList) {
+                let line = document.createElement("p");
+                line.innerHTML = `User id: <b>${task.userId}</b>, id: ${task.id}, title: ${task.title}, checked: ${task.completed}`;
+                filteredListCont.appendChild(line)
+            }
+
         }
         button.addEventListener('click', filter)
     })
