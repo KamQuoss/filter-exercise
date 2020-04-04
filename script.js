@@ -15,8 +15,13 @@ let taskList,
     idToFilterVal,
     // tu są możliwe wartości, które może nasz klient wrzucić
     userIdVal = new Set(),
+    userIdValTab,
     minIdVal,
     maxIdVal,
+    //tu miejsce na info o poprawności inputów
+    infoUserId = document.getElementById('user-error'),
+    infoIdFrom = document.getElementById('id-from-error'),
+    infoIdTo = document.getElementById('id-to-error'),
     // a to jest przefiltrowana lista, do wyświetlenia po kliku w button
     filteredList;
 
@@ -29,40 +34,42 @@ fetch(fetchURL)
         for (task in taskList) {
             userIdVal.add(taskList[task].userId)
         }
+        userIdValTab = [...userIdVal];
         minIdVal = taskList[0].id;
         maxIdVal = taskList[taskList.length - 1].id;
-        console.log(maxIdVal);
 
         // tu robię live filter na inputach, gdy zmienia się coś w inpucie to działa ta funkcja
         userIdfilter.addEventListener('input', event => {
             let val = parseInt(event.target.value);
             if (!userIdVal.has(val)) {
-                console.log("zła wartość" + val);
+                infoUserId.innerHTML = `Nieprawidłowa wartość, podaj liczbę z zakresu ${userIdValTab[0]}-${userIdValTab[userIdValTab.length-1]}`;
                 userIdfilterVal = '';
             } else {
                 userIdfilterVal = val;
+                infoUserId.innerHTML = `ok`;
             }
         });
         idFromFilter.addEventListener('input', event => {
             let val = parseInt(event.target.value);
             if (val >= minIdVal && val < maxIdVal) {
+                infoIdFrom.innerHTML = `ok`;
                 idFromFilterVal = val;
             } else {
-                console.log(`Zła wartość minimalna`);
+                infoIdFrom.innerHTML = `Nieprawidłowa wartość, podaj liczbę z zakresu ${minIdVal}-${maxIdVal-1}`;
             }
         });
         idToFilter.addEventListener('input', event => {
             let val = parseInt(event.target.value);
             if (val > minIdVal && val <= maxIdVal) {
+                infoIdTo.innerHTML = ``;
                 idToFilterVal = val;
             } else {
-                console.log(`Zła wartość maksymalna`);
+                infoIdTo.innerHTML = `Nieprawidłowa wartość, podaj liczbę z zakresu ${minIdVal+1}-${maxIdVal}`;
             }
         });
 
         // ta funkcja będzie wypisywać i filtrować na żądanie klienta
         const filter = () => {
-            // tu pobierałam value, ale teraz będę brać value przy okazji live sprawdzania
             filteredList = taskList
                 .filter(task => {
                     if (!userIdfilterVal) return true; // jeśli nie wpiszę nic to przechodzą wszystkie przez filtr
@@ -87,12 +94,18 @@ fetch(fetchURL)
                 .filter(task => {
                     return task.completed == completedFilter.checked
                 });
-            filteredListCont.innerHTML = "";
-            for (task of filteredList) {
-                let line = document.createElement("p");
-                line.innerHTML = `User id: <b>${task.userId}</b>, id: ${task.id}, title: ${task.title}, checked: ${task.completed}`;
-                filteredListCont.appendChild(line)
-            }
+                if(filteredList.length==0){
+                    filteredListCont.innerHTML = "Nie znalazłem wyników spełniającyh Twoje kryteria";
+                }
+                else{
+                    filteredListCont.innerHTML = "";
+                    for (task of filteredList) {
+                        let line = document.createElement("p");
+                        line.innerHTML = `User id: <b>${task.userId}</b>, id: <b>${task.id}</b>, title: <b>${task.title}</b>, checked: <b>${task.completed}</b>`;
+                        filteredListCont.appendChild(line)
+                    }
+                }
+            
 
         }
         button.addEventListener('click', filter)
