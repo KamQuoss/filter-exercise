@@ -112,7 +112,7 @@ const filter = () => {
                 <div class="card ${userColors[task.userId - 1]} ${task.completed ? 'lighten-1' : 'darken-1'}">
                     <div class="card-content ${task.completed ? 'black-text' : 'white-text'}">
                         <span class="card-title info">
-                        <span><i class="card-title-icon material-icons">account_circle</i> ${task.userId}</span>                        
+                        <span><i class="card-title-icon material-icons">account_circle</i> User ${task.userId}</span>                        
                         <span>done: <i class="card-title-icon material-icons">${task.completed ? 'done' : 'clear'}</i></span>
                         </span>
                         <span class="card-title"><span><i class="card-title-icon material-icons">edit</i> ${task.id}</span> ${task.title}</span>
@@ -137,10 +137,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 hover: true
             }
         });
-    elem.addEventListener('change', ()=>{console.log(instances)})    
+    elem.addEventListener('change', ()=>{console.log(instances.getSelectedValues())})    
 
 });
 
+
+let checkboxes = document.querySelectorAll('input[type="checkbox"]')
+for (checkbox of checkboxes) {
+    checkbox.addEventListener('change', (e)=>console.log(e.target.value, e.target.checked))
+}
 
 var slider = document.getElementById('test-slider');
 noUiSlider.create(slider, {

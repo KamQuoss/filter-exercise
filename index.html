@@ -49,24 +49,35 @@
     <div class="section">
       <div class="row">
         <div class="input-field col s6">
-          <input placeholder="Title" id="first_name" type="text" class="validate">
-          <label for="first_name">Title</label>
+          <input placeholder="Title" id="task-title" type="text">
+          <label for="task-title">Search title</label>
         </div>
         <div class="input-field col s3 user">          
-          <select multiple data-beloworigin="true">
-            <option value="" disabled selected>Choose your option</option>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
-            <option value="4">Option 3</option>
-            <option value="5">Option 3</option>
-            <option value="6">Option 3</option>
-            <option value="7">Option 3</option>
-            <option value="8">Option 3</option>
-            <option value="9">Option 3</option>
-            <option value="10">Option 3</option>
+          <select multiple>
+            <option value="1">User 1</option>
+            <option value="2">User 2</option>
+            <option value="3">User 3</option>
+            <option value="4">User 4</option>
+            <option value="5">User 5</option>
+            <option value="6">User 6</option>
+            <option value="7">User 7</option>
+            <option value="8">User 8</option>
+            <option value="9">User 9</option>
+            <option value="10">User 10</option>
           </select>
           <label>Choose user</label>          
+        </div>
+        <div class="col s3">
+          <p>Completed
+            <label>
+              <input type="checkbox" class="filled-in" checked="checked" value="yes" />
+              <span>yes</span>
+            </label>
+            <label>
+              <input type="checkbox" class="filled-in" checked="checked" value="no" />
+              <span>no</span>
+            </label>
+          </p>
         </div>
       </div>
       <div class="row">
