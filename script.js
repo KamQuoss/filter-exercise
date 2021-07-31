@@ -1,14 +1,21 @@
-const filteredListCont = document.querySelector('#results'),
-    fetchURL = 'https://jsonplaceholder.typicode.com/todos',
-    button = document.getElementById('getInfo');
+let url = 'https://jsonplaceholder.typicode.com/todos',
+    // HTML elements    
+    resultContainer = document.querySelector('#results'),
+    titleInput = document.querySelector('#task-title'),
+    dropdown = document.querySelector('.user select'),
+    checkboxes = document.querySelectorAll('input[type="checkbox"]'),
+    range = document.getElementById('test-slider'),
 
-let taskList,
+    usersId,
+    idLimits,
+
+    taskList,
     // tu definiuję inputy
-    userIdfilter = document.querySelector('input#user-filter'),
-    idFromFilter = document.querySelector('input#id-from-filter'),
-    idToFilter = document.querySelector('input#id-to-filter'),
-    titleFilter = document.querySelector('input#title-filter'),
-    completedFilter = document.querySelector('input#completed'),
+    userIdfilter = document.querySelector('input#user-filter'),// out
+    idFromFilter = document.querySelector('input#id-from-filter'),// out
+    idToFilter = document.querySelector('input#id-to-filter'),// out
+    titleFilter = document.querySelector('input#title-filter'),// out
+    completedFilter = document.querySelector('input#completed'),// out
     // tu są wartości inpuntów
     userIdfilterVal,
     idFromFilterVal,
@@ -19,19 +26,76 @@ let taskList,
     minIdVal,
     maxIdVal,
     //tu miejsce na info o poprawności inputów
-    infoUserId = document.getElementById('user-error'),
-    infoIdFrom = document.getElementById('id-from-error'),
-    infoIdTo = document.getElementById('id-to-error'),
+    infoUserId = document.getElementById('user-error'),// out
+    infoIdFrom = document.getElementById('id-from-error'),// out
+    infoIdTo = document.getElementById('id-to-error'),// out
     // a to jest przefiltrowana lista, do wyświetlenia po kliku w button
     filteredList,
     userColors = ['red', 'pink', 'purple', 'deep-purple', 'indigo', 'blue', 'light-blue', 'cyan', 'teal', 'green'];
 
-// tu pobierane są dane przy załadowaniu strony
-fetch(fetchURL)
+const getUsersId = (list) => {
+    let users = new Set()
+    for (item of list) {
+        users.add(item.userId)
+    }
+    return [...users]
+}
+
+const getIdLimits = (list) => {
+    return limits = {
+        min: list[0].id,
+        max: list[list.length - 1].id,
+    }
+}
+
+// TO DO:
+// choose user dropdown should be generated after data are downloaded
+// catch error
+
+// fetch data
+fetch(url)
     .then(response => response.json())
     .then(json => {
-        taskList = json; // pobrane dane to task
-        // tutaj będę pobierać wartości w jakich mogę się poruszać
+        taskList = json;
+
+        usersId = getUsersId(taskList);
+        idLimits = getIdLimits(taskList);
+
+
+
+        // create range
+        noUiSlider.create(range, {
+            start: [idLimits.min, idLimits.max],
+            connect: true,
+            step: 1,
+            orientation: 'horizontal', // 'horizontal' or 'vertical'
+            range: {
+                'min': idLimits.min,
+                'max': idLimits.max
+            },
+            format: wNumb({
+                decimals: 0
+            })
+        });
+
+        // initialize select
+        var instances = M.FormSelect.init(dropdown,
+            {
+                dropdownOptions: {
+                    coverTrigger: false,
+                    hover: true
+                }
+            });
+
+
+
+        // add listeners 
+        titleInput.addEventListener('input', (e) => console.log(e.target.value) );   
+        dropdown.addEventListener('change', () => { console.log(instances.getSelectedValues()) });
+        for (checkbox of checkboxes) {
+            checkbox.addEventListener('change', (e) => console.log(e.target.value, e.target.checked))
+        }
+        range.noUiSlider.on("update", (values) => console.log(values));
 
         for (task in taskList) {
             userIdVal.add(taskList[task].userId)
@@ -40,8 +104,11 @@ fetch(fetchURL)
         minIdVal = taskList[0].id;
         maxIdVal = taskList[taskList.length - 1].id;
         filter();
-
     })
+    .catch(reason => console.log(reason))
+
+
+
 // tu robię live filter na inputach, gdy zmienia się coś w inpucie to działa ta funkcja
 userIdfilter.addEventListener('input', event => {
     let val = parseInt(event.target.value);
@@ -100,10 +167,10 @@ const filter = () => {
             return task.completed == completedFilter.checked
         });
     if (filteredList.length == 0) {
-        filteredListCont.innerHTML = "Nothing to show";
+        resultContainer.innerHTML = "Nothing to show";
     }
     else {
-        filteredListCont.innerHTML = "";
+        resultContainer.innerHTML = "";
         for (task of filteredList) {
             let card = document.createElement('div');
             card.classList.add('col', 's12', 'm4', 'l3');
@@ -122,42 +189,7 @@ const filter = () => {
                     </div>
                 </div>
                 `;
-            filteredListCont.append(card)
+            resultContainer.append(card)
         }
     }
 }
-button.addEventListener('click', filter);
-
-document.addEventListener('DOMContentLoaded', function () {
-    var elem = document.querySelector('.user select');
-    var instances = M.FormSelect.init(elem,
-        {
-            dropdownOptions: {
-                coverTrigger: false,
-                hover: true
-            }
-        });
-    elem.addEventListener('change', ()=>{console.log(instances.getSelectedValues())})    
-
-});
-
-
-let checkboxes = document.querySelectorAll('input[type="checkbox"]')
-for (checkbox of checkboxes) {
-    checkbox.addEventListener('change', (e)=>console.log(e.target.value, e.target.checked))
-}
-
-var slider = document.getElementById('test-slider');
-noUiSlider.create(slider, {
-    start: [20, 80],
-    connect: true,
-    step: 1,
-    orientation: 'horizontal', // 'horizontal' or 'vertical'
-    range: {
-        'min': 0,
-        'max': 100
-    },
-    // format: wNumb({
-    //     decimals: 0
-    // })
-});

@@ -32,7 +32,13 @@ This is solution of taks assignment during fullstack course at C_school.
 At first stage I've build simple fetch function and pure HTML form to manipulate visibility of data. At this point my knowledge about frontend was narrow, and my approach was to learn with small steps. After few months of commercial development I've decided to expand this little project. 
 
 Here comes stage two....
+- types of inputs and input events
+- reading documentation
+- finding solutions at StackOverflow
 
+### Proud of
+Finding solution for stackoverflow question and publishig it.
+[here](https://stackoverflow.com/questions/50051540/materialize-dropdown-options/68602124#68602124) is my answer.
 
 ## Author
 
