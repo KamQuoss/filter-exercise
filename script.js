@@ -109,7 +109,7 @@ const filter = () => {
             card.classList.add('col', 's12', 'm4', 'l3');
             card.innerHTML =
                 `
-                <div class="card ${userColors[task.userId-1]} ${task.completed ? 'lighten-1' : 'darken-1'}">
+                <div class="card ${userColors[task.userId - 1]} ${task.completed ? 'lighten-1' : 'darken-1'}">
                     <div class="card-content ${task.completed ? 'black-text' : 'white-text'}">
                         <span class="card-title info">
                         <span><i class="card-title-icon material-icons">account_circle</i> ${task.userId}</span>                        
@@ -127,6 +127,19 @@ const filter = () => {
     }
 }
 button.addEventListener('click', filter);
+
+document.addEventListener('DOMContentLoaded', function () {
+    var elem = document.querySelector('.user select');
+    var instances = M.FormSelect.init(elem,
+        {
+            dropdownOptions: {
+                coverTrigger: false,
+                hover: true
+            }
+        });
+    elem.addEventListener('change', ()=>{console.log(instances)})    
+
+});
 
 
 var slider = document.getElementById('test-slider');
