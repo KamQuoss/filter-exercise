@@ -37,8 +37,8 @@ Here comes stage two....
 - finding solutions at StackOverflow
 
 ### Proud of
-Finding solution for stackoverflow question and publishig it.
-[here](https://stackoverflow.com/questions/50051540/materialize-dropdown-options/68602124#68602124) is my answer.
+Finding solution for stackoverflow question and publishing it.
+[here](https://stackoverflow.com/questions/50051540/materialize-dropdown-options/68602124#68602124) is my answer. 
 
 ## Author
 
