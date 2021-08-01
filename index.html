@@ -21,13 +21,19 @@
       display: flex;
       justify-content: space-between;
     }
-    .card .card-content span.card-title.info span{
+
+    .card .card-content span.card-title.info span {
       display: flex;
       align-items: center;
     }
+
     .card .card-content .card-title i {
-    line-height: unset;
-}
+      line-height: unset;
+    }
+
+    .card {
+      min-height: 25rem;
+    }
   </style>
 </head>
 
@@ -58,22 +64,22 @@
             <option value="10" selected>User 10</option>
           </select>
           <label>Choose user</label>
-        </div>        
+        </div>
       </div>
       <div class="row">
         <div class="col s9">
           <div id="test-slider"></div>
         </div>
         <div class="col s3">
-            <div class="switch">
-              <label>
-                unfinished
-                <input type="checkbox">
-                <span class="lever"></span>
-                completed
-              </label>
-            </div>
+          <div class="switch">
+            <label>
+              unfinished
+              <input type="checkbox">
+              <span class="lever"></span>
+              completed
+            </label>
           </div>
+        </div>
       </div>
     </div>
     <div class="divider"></div>
