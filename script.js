@@ -8,7 +8,7 @@ let url = 'https://jsonplaceholder.typicode.com/todos',
     resultContainer = document.querySelector('#results'),
     titleInput = document.querySelector('#task-title'),
     dropdown = document.querySelector('.user select'),
-    checkboxes = document.querySelectorAll('input[type="checkbox"]'),
+    checkbox = document.querySelector('input[type="checkbox"]'),
     range = document.getElementById('test-slider'),
 
     taskList,
@@ -30,13 +30,14 @@ const getIdLimits = (list) => {
 };
 
 const showCards = (list, settings) => {
+    console.log(!settings.completed.no);
     let filtered = list
         .filter((task) => {
             return (
                 task.id >= settings.id.min &&
                 task.id <= settings.id.max &&
-                task.title.includes(settings.title)                
-                // task.completed == settings.completed.yes
+                task.title.includes(settings.title) &&
+                task.completed == settings.completed
             )
         });
 
@@ -82,10 +83,7 @@ fetch(url)
             filterSettings = {
                 title: '',
                 users: getUsersId(taskList),
-                completed: {
-                    yes: true,
-                    no: true,
-                },
+                completed: false,
                 id: {
                     min: idLimits.min,
                     max: idLimits.max,
@@ -125,12 +123,10 @@ fetch(url)
             filterSettings.users = instances.getSelectedValues();
             showCards(taskList, filterSettings);
         });
-        for (checkbox of checkboxes) {
-            checkbox.addEventListener('change', (e) => {
-                filterSettings[e.target.value] = e.target.checked;
-                showCards(taskList, filterSettings);
-            })
-        }
+        checkbox.addEventListener('change', (e) => {
+            filterSettings.completed = e.target.checked;
+            showCards(taskList, filterSettings);
+        });
         range.noUiSlider.on("update", (values) => {
             filterSettings.id.min = values[0];
             filterSettings.id.max = values[1];

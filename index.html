@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <title>...</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Dogfalo/materialize@master/extras/noUiSlider/nouislider.css" />
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/Dogfalo/materialize@master/extras/noUiSlider/nouislider.css" />
   <!--Import materialize.css-->
   <link type="text/css" rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" media="screen,projection" />
@@ -32,7 +33,7 @@
           <input placeholder="Title" id="task-title" type="text">
           <label for="task-title">Search title</label>
         </div>
-        <div class="input-field col s3 user">          
+        <div class="input-field col s3 user">
           <select multiple disabled>
             <option value="1">User 1</option>
             <option value="2">User 2</option>
@@ -45,19 +46,18 @@
             <option value="9">User 9</option>
             <option value="10">User 10</option>
           </select>
-          <label>Choose user</label>          
+          <label>Choose user</label>
         </div>
         <div class="col s3">
-          <p>Completed
+          <div class="switch">
+            <p>Show only Completed </p>
             <label>
-              <input type="checkbox" class="filled-in" checked="checked" value="yes" />
-              <span>yes</span>
+              Off
+              <input type="checkbox">
+              <span class="lever"></span>
+              On
             </label>
-            <label>
-              <input type="checkbox" class="filled-in" checked="checked" value="no" />
-              <span>no</span>
-            </label>
-          </p>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -74,7 +74,7 @@
       <div id="results" class="row">
       </div>
     </div>
-  
+
 
   </div>
   <!--JavaScript at end of body for optimized loading-->
