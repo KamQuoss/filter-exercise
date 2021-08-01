@@ -11,7 +11,7 @@ This is solution of taks assignment during fullstack course at C_school.
 
 ### Screenshot
 
-![](images/screenshot.png)
+![](screenshot.png)
 
 ### Links
 
