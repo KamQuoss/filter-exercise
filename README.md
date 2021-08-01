@@ -31,9 +31,22 @@ This is solution of taks assignment during fullstack course at C_school.
 
 At first stage I've build simple fetch function and pure HTML form to manipulate visibility of data. At this point my knowledge about frontend was narrow, and my approach was to learn with small steps. After few months of commercial development I've decided to expand this little project. 
 
-Here comes stage two....
+:construction_worker: stage two
 - types of inputs and input events
-- reading documentation
+- using Objects to save component state
+```js
+let filterSettings = {
+        title: '',
+        users: getUsersId(taskList),
+        completed: false,
+        id: {
+            min: idLimits.min,
+            max: idLimits.max,
+        }
+    };
+```
+- using Set()
+- reading documentation (https://materializecss.com/)
 - finding solutions at StackOverflow
 
 ### Proud of
