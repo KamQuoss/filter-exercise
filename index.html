@@ -17,15 +17,21 @@
       font-size: 1.5rem;
     }
 
-    .card .card-content .card-title .info {
+    .card .card-content span.card-title.info {
       display: flex;
       justify-content: space-between;
     }
+    .card .card-content span.card-title.info span{
+      display: flex;
+      align-items: center;
+    }
+    .card .card-content .card-title i {
+    line-height: unset;
+}
   </style>
 </head>
 
 <body>
-  <!-- materialize -->
   <div class="container">
     <div class="section">
       <div class="row">
@@ -34,17 +40,17 @@
           <label for="task-title">Search title</label>
         </div>
         <div class="input-field col s3 user">
-          <select multiple disabled>
-            <option value="1">User 1</option>
-            <option value="2">User 2</option>
-            <option value="3">User 3</option>
-            <option value="4">User 4</option>
-            <option value="5">User 5</option>
-            <option value="6">User 6</option>
-            <option value="7">User 7</option>
-            <option value="8">User 8</option>
-            <option value="9">User 9</option>
-            <option value="10">User 10</option>
+          <select multiple>
+            <option value="1" selected>User 1</option>
+            <option value="2" selected>User 2</option>
+            <option value="3" selected>User 3</option>
+            <option value="4" selected>User 4</option>
+            <option value="5" selected>User 5</option>
+            <option value="6" selected>User 6</option>
+            <option value="7" selected>User 7</option>
+            <option value="8" selected>User 8</option>
+            <option value="9" selected>User 9</option>
+            <option value="10" selected>User 10</option>
           </select>
           <label>Choose user</label>
         </div>
@@ -65,8 +71,6 @@
           <div id="test-slider"></div>
         </div>
       </div>
-
-
     </div>
     <div class="divider"></div>
     <div class="section">
@@ -74,10 +78,8 @@
       <div id="results" class="row">
       </div>
     </div>
-
-
   </div>
-  <!--JavaScript at end of body for optimized loading-->
+
   <script src="https://cdn.jsdelivr.net/gh/Dogfalo/materialize@master/extras/noUiSlider/nouislider.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="script.js"></script>

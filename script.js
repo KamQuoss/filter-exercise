@@ -1,6 +1,6 @@
 // TO DO:
 // choose user dropdown should be generated after data are downloaded
-// filter completed and users
+// filter users
 // catch error
 
 let url = 'https://jsonplaceholder.typicode.com/todos',
@@ -11,13 +11,12 @@ let url = 'https://jsonplaceholder.typicode.com/todos',
     checkbox = document.querySelector('input[type="checkbox"]'),
     range = document.getElementById('test-slider'),
 
-    taskList,
     userColors = ['red', 'pink', 'purple', 'deep-purple', 'indigo', 'blue', 'light-blue', 'cyan', 'teal', 'green'];
 
 const getUsersId = (list) => {
     let users = new Set()
     for (item of list) {
-        users.add(item.userId)
+        users.add(item.userId.toString())
     }
     return [...users]
 };
@@ -29,53 +28,11 @@ const getIdLimits = (list) => {
     }
 };
 
-const showCards = (list, settings) => {
-    console.log(!settings.completed.no);
-    let filtered = list
-        .filter((task) => {
-            return (
-                task.id >= settings.id.min &&
-                task.id <= settings.id.max &&
-                task.title.includes(settings.title) &&
-                task.completed == settings.completed
-            )
-        });
-
-    if (filtered.length == 0) {
-        resultContainer.innerHTML = "Nothing to show";
-    }
-    else {
-        resultContainer.innerHTML = "";
-        for (task of filtered) {
-            let card = document.createElement('div');
-            card.classList.add('col', 's12', 'm4', 'l3');
-            card.innerHTML =
-                `
-                <div class="card ${userColors[task.userId - 1]} ${task.completed ? 'lighten-1' : 'darken-1'}">
-                    <div class="card-content ${task.completed ? 'black-text' : 'white-text'}">
-                        <span class="card-title info">
-                        <span><i class="card-title-icon material-icons">account_circle</i> User ${task.userId}</span>                        
-                        <span>done: <i class="card-title-icon material-icons">${task.completed ? 'done' : 'clear'}</i></span>
-                        </span>
-                        <span class="card-title"><span><i class="card-title-icon material-icons">edit</i> ${task.id}</span> ${task.title}</span>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam provident, commodi eaque voluptatem
-                        omnis eligendi magnam ut saepe autem illum ipsam explicabo quis corporis quod et labore, doloribus
-                        reiciendis quo.</p>
-                    </div>
-                </div>
-                `;
-            resultContainer.append(card)
-        }
-    }
-};
-
-
-
 // fetch data
 fetch(url)
     .then(response => response.json())
     .then(json => {
-        taskList = json;
+        let taskList = json;
 
         let
             idLimits = getIdLimits(taskList),
@@ -89,6 +46,46 @@ fetch(url)
                     max: idLimits.max,
                 }
             };
+
+        const showCards = () => {
+            let filtered = taskList
+                .filter(task => {
+                    return (
+                        task.id >= filterSettings.id.min &&
+                        task.id <= filterSettings.id.max &&
+                        task.title.includes(filterSettings.title) &&
+                        task.completed == filterSettings.completed &&
+                        filterSettings.users.includes(`${task.userId}`)
+                    )
+                });
+
+            if (filtered.length == 0) {
+                resultContainer.innerHTML = "Nothing to show";
+            }
+            else {
+                resultContainer.innerHTML = "";
+                for (task of filtered) {
+                    let card = document.createElement('div');
+                    card.classList.add('col', 's12', 'm4', 'l3');
+                    card.innerHTML =
+                        `
+                            <div class="card ${userColors[task.userId - 1]} ${task.completed ? 'lighten-1' : 'darken-1'}">
+                                <div class="card-content ${task.completed ? 'black-text' : 'white-text'}">
+                                    <span class="card-title info">
+                                    <span><i class="card-title-icon material-icons">account_circle</i> User ${task.userId}</span>                        
+                                    <span>completed: <i class="card-title-icon material-icons">${task.completed ? 'done' : 'clear'}</i></span>
+                                    </span>
+                                    <span class="card-title"><b>${task.id}.</b> ${task.title}</span>
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam provident, commodi eaque voluptatem
+                                    omnis eligendi magnam ut saepe autem illum ipsam explicabo quis corporis quod et labore, doloribus
+                                    reiciendis quo.</p>
+                                </div>
+                            </div>
+                            `;
+                    resultContainer.append(card)
+                }
+            }
+        };
 
         // create range
         noUiSlider.create(range, {
@@ -106,7 +103,7 @@ fetch(url)
         });
 
         // initialize select
-        var instances = M.FormSelect.init(dropdown,
+        var instance = M.FormSelect.init(dropdown,
             {
                 dropdownOptions: {
                     coverTrigger: false,
@@ -120,7 +117,7 @@ fetch(url)
             showCards(taskList, filterSettings);
         });
         dropdown.addEventListener('change', () => {
-            filterSettings.users = instances.getSelectedValues();
+            filterSettings.users = instance.getSelectedValues();
             showCards(taskList, filterSettings);
         });
         checkbox.addEventListener('change', (e) => {
@@ -133,7 +130,7 @@ fetch(url)
             showCards(taskList, filterSettings);
         });
 
-        // new filter
+        // initial sho cards
         showCards(taskList, filterSettings);
     })
     .catch(reason => console.log(reason))
